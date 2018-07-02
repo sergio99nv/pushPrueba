@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="manifest" href="/manifest.json">
+
+    </head>
+    <body>
+ <button id="btnEnvio">enviio</button>
+     
+      <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-messaging.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-functions.js"></script>
+ 
+<script>
+
+  (function(firebase){ 
+    var config = {
+        apiKey: "AIzaSyBFHIses2lmVT5kPS795dO3gzLCL2ZRQMs",
+        authDomain: "push-657ef.firebaseapp.com",
+        databaseURL: "https://push-657ef.firebaseio.com",
+        projectId: "push-657ef",
+        storageBucket: "push-657ef.appspot.com",
+        messagingSenderId: "67805460551"
+      };
+    
+      
+      firebase.initializeApp(config);
+     
+  
+ 
+    const messaging = firebase.messaging();
+      messaging.requestPermission()
+      .then(function( res){
+          //console.log("permisos ok", res)
+           return messaging.getToken(); 
+      })
+      .then(function(token){
+        console.log(token)
+      })
+      .catch(function(err){
+          console.log("ERROR:", err)
+      })
+    
+    
+    messaging.usePublicVapidKey('BEh_dfCCajQU50mv6e2UDGnWSTWHNLvACjt3tztELlqlEcT9CcsQJSl4Q7HlHjK8cr6aolmQPnvaBtcT7LVMasI');
+    
+    
+      messaging.onMessage(function(payload){
+          console.log("on meesage: ", payload)
+      })
+
+
+    })(firebase)
+</script>
+
+
+<script>
+ document.addEventListener("DOMContentLoaded", function(event) { 
+
+
+   var key = ' AAAAD8mFOEc:APA91bEGP-8BDx2J78z586xfjNXZIb4iFWqapwdr8q1aVi7u0INZ1UHm6gLBGANJ17M5SXt87mldDKRiqK_ZEXCg9NW6ihLpoeHVM9Enq09DplRTwqWN7FZFhxuSkBIOdDqS4LT15wWj';
+   var to = 'e0ZMTqiw6hY:APA91bFdz75veaFuR18jpujiv9cLGOX7ckTgFoLbvyfEMY0xFFKMkuys3xQE4WQNQPsEfRiiaMhNUZ52ttWJlfHRgbhGeJGdvQEqKUW-EHLyrfhE3bWJaIz20TnT0z9G61TfN_dJk_-0_8YhRnon-defqZuVry0PHw';
+   var notification = {
+    'title': 'Portugal vs. Denmark',
+    'body': '5 to 1',
+    'icon': 'firebase-logo.png'
+  };
+
+
+ function envio(){
+     
+    fetch('https://fcm.googleapis.com/fcm/send', {
+      'method': 'POST',
+      'headers': {
+        'Authorization': 'key=' + key,
+        'Content-Type': 'application/json'
+      },
+      'body': JSON.stringify({
+        'notification': notification,
+        'to': to
+      })
+    }).then(function(response) {
+      console.log(response,55);
+    }).catch(function(error) {
+      console.error(error);
+    })
+  }
+
+
+  const btn =  document.querySelector("#btnEnvio");
+
+ 
+  
+
+   btn.addEventListener("click", envio, false); 
+
+});
+  
+</script>
+
+
+<script>
+navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function (registration)
+               {
+                var serviceWorker;
+                if (registration.installing) {
+                    serviceWorker = registration.installing;
+                } else if (registration.waiting) {
+                    serviceWorker = registration.waiting;
+                } else if (registration.active) {
+                    serviceWorker = registration.active;
+                }
+                console.log('ServiceWorker registration : ', 88);
+            }).catch(function (err) {
+            console.log('ServiceWorker registration failed: ', err);
+        });
+
+</script>
+    
+    </body>
+</html>
